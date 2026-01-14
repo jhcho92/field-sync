@@ -27,8 +27,8 @@ import ConfirmModal from './components/ConfirmModal'
 // 유틸리티 임포트
 import { calculateDistance, generateId } from './utils/geoUtils'
 
-// 더미 데이터
-const DUMMY_LOCATIONS = [
+// 초기 기본 장소 데이터
+const INITIAL_LOCATIONS = [
   { id: '1', name: '본사', address: '서울 서초구 반포대로 118', latitude: 37.4906849, longitude: 127.0085829 }
 ]
 
@@ -76,8 +76,8 @@ export default function App() {
     if (stored) {
       setLocations(JSON.parse(stored))
     } else {
-      setLocations(DUMMY_LOCATIONS)
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(DUMMY_LOCATIONS))
+      setLocations(INITIAL_LOCATIONS)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_LOCATIONS))
     }
 
     const storedReports = localStorage.getItem(RECENT_REPORTS_KEY)

@@ -61,7 +61,7 @@ const LocationListModal = ({
 
         <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col">
           {showClearAll && locations.length > 0 && (
-            <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm px-8 border-b border-gray-50 flex justify-start shrink-0">
+            <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm px-8 py-4 border-b border-gray-50 flex justify-start shrink-0">
               <button
                 onClick={onClearAll}
                 className="text-sm font-bold text-gray-400 hover:text-red-500 transition-colors px-1"

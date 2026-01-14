@@ -50,8 +50,8 @@ const Header = ({ onShowQR, onShowSave, onShowLocationList }) => {
               setShowMenu(true);
             }
           }}
-          className={`p-2.5 rounded-full transition-all active:scale-90 shadow-sm ${
-            showMenu ? 'bg-blue-500 text-white' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+          className={`p-2.5 rounded-full transition-all active:scale-90 ${
+            showMenu ? 'bg-blue-500 text-white shadow-lg shadow-blue-100' : 'text-gray-700 hover:bg-gray-100'
           }`}
           aria-label="Menu"
         >
