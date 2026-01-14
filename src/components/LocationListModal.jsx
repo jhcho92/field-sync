@@ -44,7 +44,7 @@ const LocationListModal = ({
       <div className={`bg-white w-full max-w-lg rounded-t-[2.5rem] sm:rounded-[2.5rem] flex flex-col max-h-[90vh] shadow-2xl overflow-hidden ${
         isClosing ? 'animate-slide-down' : 'animate-slide-up'
       }`}>
-        <div className="p-8 border-b border-gray-50 flex items-center justify-between">
+        <div className="pt-8 px-8 pb-4 border-b border-gray-50 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-50 rounded-xl">
               <Icon className="w-6 h-6 text-blue-500" />
@@ -61,7 +61,7 @@ const LocationListModal = ({
 
         <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col">
           {showClearAll && locations.length > 0 && (
-            <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm px-8 py-4 border-b border-gray-50 flex justify-start shrink-0">
+            <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm px-8 border-b border-gray-50 flex justify-start shrink-0">
               <button
                 onClick={onClearAll}
                 className="text-sm font-bold text-gray-400 hover:text-red-500 transition-colors px-1"

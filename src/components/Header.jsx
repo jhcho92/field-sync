@@ -51,7 +51,7 @@ const Header = ({ onShowQR, onShowSave, onShowLocationList }) => {
             }
           }}
           className={`p-2.5 rounded-full transition-all active:scale-90 shadow-sm ${
-            showMenu ? 'bg-gray-800 text-white' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+            showMenu ? 'bg-blue-500 text-white' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
           }`}
           aria-label="Menu"
         >
@@ -61,7 +61,7 @@ const Header = ({ onShowQR, onShowSave, onShowLocationList }) => {
         {/* 확장 메뉴 (Dropdown) */}
         {shouldRender && (
           <div 
-            className={`absolute top-full right-0 mt-3 w-48 bg-white rounded-[1.5rem] shadow-2xl border border-gray-50 overflow-hidden origin-top-right z-[110] ${
+            className={`absolute top-full right-0 w-48 bg-white rounded-[1.5rem] shadow-2xl border border-gray-50 overflow-hidden origin-top-right z-[110] ${
               isClosing ? 'animate-menu-out' : 'animate-menu-in'
             }`}
             onClick={(e) => e.stopPropagation()}
@@ -72,9 +72,9 @@ const Header = ({ onShowQR, onShowSave, onShowLocationList }) => {
                   onShowSave();
                   handleClose();
                 }}
-                className="flex items-center gap-3 w-full p-4 hover:bg-blue-50 text-gray-700 hover:text-blue-600 rounded-xl transition-colors font-bold text-base"
+                className="flex items-center gap-3 w-full p-4 hover:bg-blue-50 text-gray-700 hover:text-blue-600 rounded-xl transition-colors font-bold text-base group"
               >
-                <div className="p-1.5 bg-blue-50 text-blue-500 rounded-lg">
+                <div className="p-1.5 bg-blue-50 text-blue-500 rounded-lg group-hover:bg-blue-100 transition-colors">
                   <Plus className="w-4 h-4 stroke-[3]" />
                 </div>
                 위치 추가
@@ -85,9 +85,9 @@ const Header = ({ onShowQR, onShowSave, onShowLocationList }) => {
                   onShowLocationList();
                   handleClose();
                 }}
-                className="flex items-center gap-3 w-full p-4 hover:bg-gray-50 text-gray-700 rounded-xl transition-colors font-bold text-base"
+                className="flex items-center gap-3 w-full p-4 hover:bg-blue-50 text-gray-700 hover:text-blue-600 rounded-xl transition-colors font-bold text-base group"
               >
-                <div className="p-1.5 bg-gray-100 text-gray-500 rounded-lg">
+                <div className="p-1.5 bg-gray-100 text-gray-500 rounded-lg group-hover:bg-blue-100 group-hover:text-blue-500 transition-colors">
                   <List className="w-4 h-4" />
                 </div>
                 장소 목록
@@ -98,9 +98,9 @@ const Header = ({ onShowQR, onShowSave, onShowLocationList }) => {
                   onShowQR();
                   handleClose();
                 }}
-                className="flex items-center gap-3 w-full p-4 hover:bg-gray-50 text-gray-700 rounded-xl transition-colors font-bold text-base"
+                className="flex items-center gap-3 w-full p-4 hover:bg-blue-50 text-gray-700 hover:text-blue-600 rounded-xl transition-colors font-bold text-base group"
               >
-                <div className="p-1.5 bg-gray-100 text-gray-500 rounded-lg">
+                <div className="p-1.5 bg-gray-100 text-gray-500 rounded-lg group-hover:bg-blue-100 group-hover:text-blue-500 transition-colors">
                   <QrCode className="w-4 h-4" />
                 </div>
                 앱 공유

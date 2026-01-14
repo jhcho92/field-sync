@@ -130,13 +130,13 @@ const LocationSaveModal = ({ isOpen, onClose, onSave, onUpdate, currentPosition,
   if (!shouldRender) return null;
 
   return (
-    <div className={`fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-black/30 backdrop-blur-sm transition-all ${
+    <div className={`fixed inset-0 z-[120] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-black/30 backdrop-blur-sm transition-all ${
       isClosing ? 'animate-fade-out' : 'animate-fade-in'
     }`}>
       <div className={`bg-white w-full max-w-lg rounded-t-[2.5rem] sm:rounded-[2.5rem] flex flex-col max-h-[95vh] shadow-2xl overflow-hidden ${
         isClosing ? 'animate-slide-down' : 'animate-slide-up'
       }`}>
-        <div className="p-8 border-b border-gray-50 flex items-center justify-between">
+        <div className="pt-8 px-8 pb-4 border-b border-gray-50 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className={`p-2 rounded-xl ${editData ? 'bg-indigo-50' : 'bg-blue-50'}`}>
               {editData ? (
@@ -154,8 +154,8 @@ const LocationSaveModal = ({ isOpen, onClose, onSave, onUpdate, currentPosition,
           </button>
         </div>
 
-        <div className="px-8 overflow-y-auto space-y-8">
-          <div className="space-y-3">
+        <div className="pt-4 px-8 pb-4 overflow-y-auto space-y-8">
+          <div className="space-y-2">
             <label className="block text-base font-bold text-gray-900 ml-1">어디를 저장할까요?</label>
             <input
               type="text"
@@ -166,7 +166,7 @@ const LocationSaveModal = ({ isOpen, onClose, onSave, onUpdate, currentPosition,
             />
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             <div className="flex items-center justify-between ml-1">
               <label className="block text-base font-bold text-gray-900">주소</label>
               <button 
@@ -176,7 +176,7 @@ const LocationSaveModal = ({ isOpen, onClose, onSave, onUpdate, currentPosition,
                 지금 위치로
               </button>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div className="w-full p-5 bg-gray-50 rounded-[1.25rem] border-transparent text-gray-900 font-bold text-lg min-h-[5.5rem] flex items-center leading-snug break-all">
                 {address ? (
                   <span className="animate-in fade-in duration-500">{address}</span>
@@ -234,7 +234,7 @@ const LocationSaveModal = ({ isOpen, onClose, onSave, onUpdate, currentPosition,
       </div>
 
       {showPostcode && (
-        <div className="fixed inset-0 z-[110] bg-white flex flex-col animate-in slide-in-from-bottom duration-300">
+        <div className="fixed inset-0 z-[130] bg-white flex flex-col animate-in slide-in-from-bottom duration-300">
           <div className="p-6 border-b flex items-center justify-between">
             <h2 className="text-2xl font-black text-gray-900">주소 검색</h2>
             <button onClick={() => setShowPostcode(false)} className="p-3 bg-gray-50 rounded-xl">

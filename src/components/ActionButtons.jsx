@@ -3,7 +3,7 @@ import { Send } from 'lucide-react';
 
 const ActionButtons = ({ onShowReport }) => {
   return (
-    <div className="grid grid-cols-1 gap-4 px-6 mt-8">
+    <div className="grid grid-cols-1 gap-4 px-6">
       <button
         onClick={onShowReport}
         className="group relative w-full h-20 bg-blue-500 hover:bg-blue-600 text-white rounded-[1.5rem] font-bold text-xl flex items-center justify-between px-8 transition-all active:scale-[0.97] shadow-lg shadow-blue-100"

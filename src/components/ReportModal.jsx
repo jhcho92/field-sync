@@ -70,7 +70,6 @@ const ReportModal = ({ isOpen, onClose, onShare, locations, currentPosition, cur
         await navigator.share({
           title: 'FieldSync 위치 보고',
           text: shareText,
-          url: window.location.href,
         });
         // 공유 성공 시 콜백 호출 및 상태 초기화
         onShare({ locationId: selectedLocationId, note });
@@ -103,7 +102,7 @@ const ReportModal = ({ isOpen, onClose, onShare, locations, currentPosition, cur
       <div className={`bg-white w-full max-w-lg rounded-t-[2.5rem] sm:rounded-[2.5rem] flex flex-col max-h-[90vh] shadow-2xl overflow-hidden ${
         isClosing ? 'animate-slide-down' : 'animate-slide-up'
       }`}>
-        <div className="p-8 border-b border-gray-50 flex items-center justify-between">
+        <div className="pt-8 px-8 pb-4 border-b border-gray-50 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-50 rounded-xl">
               <Send className="w-6 h-6 text-blue-500" />
@@ -115,7 +114,7 @@ const ReportModal = ({ isOpen, onClose, onShare, locations, currentPosition, cur
           </button>
         </div>
 
-        <div className="px-8 overflow-y-auto space-y-6">
+        <div className="pt-4 px-8 pb-8 overflow-y-auto space-y-6">
           <div className="space-y-4">
             <label className="block text-base font-bold text-gray-900 ml-1">어디라고 보고할까요?</label>
             

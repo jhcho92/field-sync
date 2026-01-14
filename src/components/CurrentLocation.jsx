@@ -19,10 +19,12 @@ const CurrentLocation = ({ currentPosition, gpsError, isLoadingGps, onAddressUpd
     setIsLoadingAddress(true);
     setAddressError(null);
     try {
+      console.log("Fetching address for:", lat, lon);
       const kakao = await loadKakaoSdk();
       const geocoder = new kakao.maps.services.Geocoder();
 
       geocoder.coord2Address(lon, lat, (result, status) => {
+        console.log("Kakao coord2Address Status:", status);
         if (status === kakao.maps.services.Status.OK) {
           const addrInfo = result[0];
           let fullAddress = addrInfo.road_address 
@@ -50,7 +52,7 @@ const CurrentLocation = ({ currentPosition, gpsError, isLoadingGps, onAddressUpd
   };
 
   return (
-    <div className="bg-white mx-6 p-6 rounded-3xl shadow-xl shadow-gray-100/50 border border-gray-50 transition-all hover:shadow-2xl hover:shadow-gray-200/50 min-h-[180px] flex flex-col">
+    <div className="bg-white p-6 rounded-3xl shadow-xl shadow-gray-100/50 border border-gray-50 transition-all hover:shadow-2xl hover:shadow-gray-200/50 min-h-[180px] flex flex-col">
       <div className="flex items-center gap-2 mb-4 shrink-0">
         <div className="p-2 bg-blue-50 rounded-xl">
           <MapPin className="w-5 h-5 text-blue-500" />

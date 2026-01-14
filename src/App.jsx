@@ -11,7 +11,8 @@ import {
   Trash2,
   Share2,
   QrCode,
-  List
+  List,
+  ChevronDown
 } from 'lucide-react'
 
 // 컴포넌트 임포트
@@ -50,8 +51,10 @@ export default function App() {
   const [listModalMode, setListModalMode] = useState('reports') // 'locations' or 'reports'
   const [editingLocation, setEditingLocation] = useState(null)
   const [confirmConfig, setConfirmConfig] = useState(null)
+  const [visibleReportCount, setVisibleReportCount] = useState(1)
   const [toast, setToast] = useState(null)
   const [isToastClosing, setIsToastClosing] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
 
   const showToast = useCallback((message, type = 'success') => {
     setToast({ message, type })
@@ -90,10 +93,14 @@ export default function App() {
       return
     }
 
+    setIsLoadingGps(true)
+    setGpsError(null)
+
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
         const newLat = pos.coords.latitude;
         const newLon = pos.coords.longitude;
+        console.log("GPS Position Received:", newLat, newLon);
         
         setCurrentPosition(prev => {
           // 이전 위치가 없거나, 10m 이상 이동했을 때만 업데이트
@@ -113,16 +120,18 @@ export default function App() {
         });
         
         setIsLoadingGps(false);
+        setGpsError(null);
       },
       (err) => {
-        setGpsError('위치 정보를 가져오지 못했어요')
+        console.error("Geolocation Error:", err);
+        setGpsError(err.code === 3 ? '위치 확인 시간이 너무 오래 걸려요' : '위치 정보를 가져오지 못했어요')
         setIsLoadingGps(false)
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      { enableHighAccuracy: false, timeout: 30000, maximumAge: 5000 }
     )
 
     return () => navigator.geolocation.clearWatch(watchId)
-  }, [])
+  }, [retryCount])
 
   const handleSaveLocation = (newLoc) => {
     const updated = [{ ...newLoc, id: generateId() }, ...locations]
@@ -176,6 +185,22 @@ export default function App() {
     showToast('보고했던 기록을 지웠어요');
   };
 
+  const handleClearAllLocations = () => {
+    setConfirmConfig({
+      title: '장소를 모두 지울까요?',
+      message: '저장된 모든 위치 정보가 사라져요.',
+      confirmText: '모두 삭제하기',
+      type: 'danger',
+      onConfirm: () => {
+        setLocations([]);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+        setRecentReportIds([]);
+        localStorage.setItem(RECENT_REPORTS_KEY, JSON.stringify([]));
+        showToast('저장된 모든 장소를 비웠어요');
+      }
+    });
+  };
+
   const handleDirectShare = async (location) => {
     if (!location) return;
     const shareText = `[${location.name}]`;
@@ -185,7 +210,6 @@ export default function App() {
         await navigator.share({
           title: 'FieldSync 위치 보고',
           text: shareText,
-          url: window.location.href,
         });
         showToast('위치를 공유했어요');
       } catch (error) {
@@ -257,7 +281,7 @@ export default function App() {
           />
 
           {/* 위치 리스트 섹션 */}
-          <div className="px-6 mt-8">
+          <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xl font-bold flex items-center gap-2 text-gray-900">
                 <Clock className="w-5 h-5 text-gray-400" />
@@ -277,25 +301,39 @@ export default function App() {
             </div>
             <div className="space-y-4">
               {recentReportIds.length > 0 ? (
-                recentReportIds.slice(0, 3).map((id) => {
-                  const loc = locations.find(l => l.id === id);
-                  if (!loc) return null;
-                  return (
-                    <div key={loc.id} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between transition-all active:scale-[0.98]">
-                      <div className="flex-1 min-w-0">
-                        <p className="font-bold text-gray-900 text-lg truncate">{loc.name}</p>
-                        <p className="text-sm text-gray-500 truncate mt-0.5">{loc.address}</p>
+                <>
+                  {recentReportIds.slice(0, visibleReportCount).map((id) => {
+                    const loc = locations.find(l => l.id === id);
+                    if (!loc) return null;
+                    return (
+                      <div key={loc.id} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between transition-all active:scale-[0.98]">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-gray-900 text-lg truncate">{loc.name}</p>
+                          <p className="text-sm text-gray-500 truncate mt-0.5">{loc.address}</p>
+                        </div>
+                        <button 
+                          onClick={() => handleDirectShare(loc)} 
+                          className="ml-4 p-2.5 bg-blue-50 text-blue-500 hover:bg-blue-100 rounded-xl transition-colors active:scale-90"
+                          title="공유하기"
+                        >
+                          <Share2 className="w-5 h-5" />
+                        </button>
                       </div>
+                    );
+                  })}
+                  
+                  {visibleReportCount < recentReportIds.length && (
+                    <div className="flex justify-center pt-2">
                       <button 
-                        onClick={() => handleDirectShare(loc)} 
-                        className="ml-4 p-2.5 bg-blue-50 text-blue-500 hover:bg-blue-100 rounded-xl transition-colors active:scale-90"
-                        title="공유하기"
+                        onClick={() => setVisibleReportCount(prev => prev + 3)}
+                        className="flex items-center gap-2 px-6 py-3 bg-gray-50 hover:bg-gray-100 text-gray-500 rounded-full text-sm font-bold transition-all active:scale-95 border border-gray-100 shadow-sm"
                       >
-                        <Share2 className="w-5 h-5" />
+                        더 보기
+                        <ChevronDown className="w-4 h-4" />
                       </button>
                     </div>
-                  );
-                })
+                  )}
+                </>
               ) : (
                 <div className="text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
                   <p className="text-gray-400">최근에 보고한 위치가 없습니다.</p>
@@ -340,8 +378,8 @@ export default function App() {
             setShowLocationListModal(false);
           }}
           onDelete={listModalMode === 'locations' ? handleDeleteLocation : handleDeleteRecentReport}
-          onClearAll={listModalMode === 'locations' ? null : handleClearRecentReports}
-          showClearAll={listModalMode === 'reports'}
+          onClearAll={listModalMode === 'locations' ? handleClearAllLocations : handleClearRecentReports}
+          showClearAll={true}
           emptyMessage={listModalMode === 'locations' ? '저장된 장소가 없어요' : '최근에 보고한 위치가 없어요'}
         />
 
